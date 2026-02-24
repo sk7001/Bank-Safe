@@ -8,7 +8,7 @@ import com.edutech.progressive.entity.Accounts;
 import java.util.List;
 
 
-
+@RestController
 public class AccountController {
 
 
