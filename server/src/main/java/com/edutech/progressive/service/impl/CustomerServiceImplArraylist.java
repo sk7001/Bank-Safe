@@ -4,10 +4,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
- 
+
+import org.springframework.stereotype.Service;
+
 import com.edutech.progressive.entity.Customers;
 import com.edutech.progressive.service.CustomerService;
  
+@Service
 public class CustomerServiceImplArraylist implements CustomerService {
  
     List<Customers> customerList = new ArrayList<>();

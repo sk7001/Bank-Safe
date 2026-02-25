@@ -7,6 +7,8 @@ import com.edutech.progressive.service.TransactionService;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+@Service
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionDAO transactionDAO;

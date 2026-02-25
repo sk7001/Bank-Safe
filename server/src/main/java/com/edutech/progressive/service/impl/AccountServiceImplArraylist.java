@@ -4,10 +4,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
- 
+
+import org.springframework.stereotype.Service;
+
 import com.edutech.progressive.entity.Accounts;
 import com.edutech.progressive.service.AccountService;
  
+@Service
 public class AccountServiceImplArraylist implements AccountService {
  
     List<Accounts> accountsList = new ArrayList<>();

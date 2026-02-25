@@ -1,28 +1,37 @@
 package com.edutech.progressive.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.edutech.progressive.entity.Transactions;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/transactions")
 public class TransactionController {
 
+    @GetMapping
     public ResponseEntity<List<Transactions>> getAllTransactions() {
         return null;
     }
-    public ResponseEntity<Transactions> getTransactionById(int transactionId) {
+
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<Transactions> getTransactionById(@PathVariable int transactionId) {
         return null;
     }
-    public ResponseEntity<Integer> addTransaction(Transactions transaction) {
+
+    @PostMapping
+    public ResponseEntity<Integer> addTransaction(@RequestBody Transactions transaction) {
         return null;
     }
-    public ResponseEntity<Void> updateTransaction(int transactionId, Transactions transaction) {
+
+    @PutMapping("/{transactionId}")
+    public ResponseEntity<Void> updateTransaction(@PathVariable int transactionId, @RequestBody Transactions transaction) {
         return null;
     }
-    public ResponseEntity<Void> deleteTransaction(int transactionId) {
+
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<Void> deleteTransaction(@PathVariable int transactionId) {
         return null;
     }
 }
