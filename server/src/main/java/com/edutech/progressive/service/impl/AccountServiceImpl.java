@@ -8,9 +8,6 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class AccountServiceImpl implements AccountService {
 
     private final AccountDAO accountDAO;
