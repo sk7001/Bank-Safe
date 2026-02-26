@@ -2,8 +2,7 @@ package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Customers;
 import com.edutech.progressive.entity.Transactions;
-import com.edutech.progressive.service.impl.CustomerServiceImplArraylist;
-import com.edutech.progressive.service.impl.CustomerServiceImplJpa;
+import com.edutech.progressive.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,51 +14,40 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    private final CustomerServiceImplJpa customerServiceJpa;
-    private final CustomerServiceImplArraylist customerServiceArraylist;
+    private final CustomerService customerService; // JPA-backed via interface
 
-    public CustomerController(CustomerServiceImplJpa customerServiceJpa,
-                              CustomerServiceImplArraylist customerServiceArraylist) {
-        this.customerServiceJpa = customerServiceJpa;
-        this.customerServiceArraylist = customerServiceArraylist;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
-    // ===================== JPA Endpoints =====================
-
-    /**
-     * GET /customers
-     * Returns a list of all customers from the database (JPA).
-     */
+    // -------------------- JPA Endpoints --------------------
     @GetMapping
     public ResponseEntity<List<Customers>> getAllCustomers() {
         try {
-            return ResponseEntity.ok(customerServiceJpa.getAllCustomers());
+            return ResponseEntity.ok(customerService.getAllCustomers());
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    /**
-     * GET /customers/{customerId}
-     * Retrieves a customer by ID from the database (JPA).
-     */
     @GetMapping("/{customerId}")
     public ResponseEntity<Customers> getCustomerById(@PathVariable int customerId) {
         try {
-            Customers c = customerServiceJpa.getCustomerById(customerId);
+            Customers c = customerService.getCustomerById(customerId);
             return ResponseEntity.ok(c);
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    
+    /**
+     * Day 6 test expects HTTP 201 (Created) for POST /customers
+     */
     @PostMapping
     public ResponseEntity<Integer> addCustomer(@RequestBody Customers customers) {
         try {
-            int id = customerServiceJpa.addCustomer(customers);
-            
-            return ResponseEntity.ok(id);
+            int id = customerService.addCustomer(customers);
+            return ResponseEntity.status(HttpStatus.CREATED).body(id);
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -69,61 +57,26 @@ public class CustomerController {
     public ResponseEntity<Void> updateCustomer(@PathVariable int customerId, @RequestBody Customers customers) {
         try {
             customers.setCustomerId(customerId);
-            customerServiceJpa.updateCustomer(customers);
+            customerService.updateCustomer(customers);
             return ResponseEntity.ok().build();
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-   
-    @DeleteMapping("/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId) {
-        try {
-            customerServiceJpa.deleteCustomer(customerId);
-            return ResponseEntity.ok().build();
-        } catch (SQLException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-
-
-
-    @GetMapping("/fromArrayList")
-    public ResponseEntity<List<Customers>> getAllCustomersFromArrayList() {
-        try {
-            return ResponseEntity.ok(customerServiceArraylist.getAllCustomers());
-        } catch (SQLException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    
-    @GetMapping("/fromArrayList/all")
-    public ResponseEntity<List<Customers>> getAllCustomersSortedByNameFromArrayList() {
-        try {
-            return ResponseEntity.ok(customerServiceArraylist.getAllCustomersSortedByName());
-        } catch (SQLException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    
-    @PostMapping("/toArrayList")
-    public ResponseEntity<Integer> addCustomersToArrayList(@RequestBody Customers customers) {
-        try {
-            int result = customerServiceArraylist.addCustomer(customers);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (SQLException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-
-   
+    // Placeholder for later days
     @GetMapping("/{customerId}/transactions")
     public ResponseEntity<List<Transactions>> getAllTransactionsByCustomerId(@PathVariable int customerId) {
         return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId) {
+        try {
+            customerService.deleteCustomer(customerId);
+            return ResponseEntity.ok().build();
+        } catch (SQLException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
