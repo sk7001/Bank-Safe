@@ -24,8 +24,14 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public List<Accounts> getAccountsByUser(int userId) throws SQLException {
-        return accountRepository.findByCustomerId(userId);
+    public List<Accounts> getAccountsByUser(int customerId) throws SQLException {
+        // ✅ Day 7: Use association path first (requires @ManyToOne in entity)
+        List<Accounts> list = accountRepository.findByCustomerCustomerId(customerId);
+        if (list == null || list.isEmpty()) {
+            // Fallback to raw FK query to be safe
+            list = accountRepository.findByCustomerId(customerId);
+        }
+        return list;
     }
 
     @Override

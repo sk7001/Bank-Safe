@@ -17,6 +17,11 @@ public class Accounts implements Comparable<Accounts> {
     @Column(nullable = false)
     private double balance;
 
+   
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private Customers customer;
+
     public Accounts() {}
 
     public Accounts(int accountId, int customerId, double balance) {
@@ -33,6 +38,9 @@ public class Accounts implements Comparable<Accounts> {
 
     public double getBalance() { return balance; }
     public void setBalance(double balance) { this.balance = balance; }
+
+    public Customers getCustomer() { return customer; }
+    public void setCustomer(Customers customer) { this.customer = customer; }
 
     @Override
     public int compareTo(Accounts o) {
