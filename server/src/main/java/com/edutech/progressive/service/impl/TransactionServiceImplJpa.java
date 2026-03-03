@@ -2,9 +2,13 @@ package com.edutech.progressive.service.impl;
 
 import com.edutech.progressive.entity.Accounts;
 import com.edutech.progressive.entity.Transactions;
+import com.edutech.progressive.exception.AccountNotFoundException;
+import com.edutech.progressive.exception.OutOfBalanceException;
+import com.edutech.progressive.exception.WithdrawalLimitException;
 import com.edutech.progressive.repository.AccountRepository;
 import com.edutech.progressive.repository.TransactionRepository;
 import com.edutech.progressive.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -18,6 +22,7 @@ public class TransactionServiceImplJpa implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
 
+    @Autowired
     public TransactionServiceImplJpa(TransactionRepository transactionRepository,
                                      AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
@@ -36,38 +41,60 @@ public class TransactionServiceImplJpa implements TransactionService {
 
     @Override
     public int addTransaction(Transactions transaction) throws SQLException {
-        // Ensure timestamp is set
         if (transaction.getTransactionDate() == null) {
             transaction.setTransactionDate(new Date());
         }
 
-        // Persist the transaction first (so id is generated)
+        String raw = transaction.getTransactionType() == null ? "" : transaction.getTransactionType().trim();
+        String type = raw.toUpperCase();
+        if ("DEBIT".equals(type))  type = "WITHDRAWAL";
+        if ("CREDIT".equals(type)) type = "DEPOSIT";
+
+        // Resolve effective account id strictly: association first, then FK
+        int effectiveId = 0;
+        if (transaction.getAccounts() != null && transaction.getAccounts().getAccountId() > 0) {
+            effectiveId = transaction.getAccounts().getAccountId();
+            transaction.setAccountId(effectiveId); // sync FK for persistence
+        } else if (transaction.getAccountId() > 0) {
+            effectiveId = transaction.getAccountId();
+        }
+
+        if (effectiveId <= 0) {
+            throw new AccountNotFoundException("No account found for id: " + effectiveId);
+        }
+
+        Accounts acc = accountRepository.findByAccountId(effectiveId);
+        if (acc == null) {
+            throw new AccountNotFoundException("No account found for id: " + effectiveId);
+        }
+
+        double amount = transaction.getAmount();
+
+        if ("WITHDRAWAL".equals(type)) {
+            if (amount > 30000.0) {
+                throw new WithdrawalLimitException("Withdrawal amount exceeds single transaction limit of 30000");
+            }
+            if (amount > acc.getBalance()) {
+                throw new OutOfBalanceException("Insufficient balance for the requested withdrawal");
+            }
+        }
+
         Transactions saved = transactionRepository.save(transaction);
 
-        // Update account balance (basic rules for Day 8; Day 9 adds validations/exceptions)
-        Accounts acc = accountRepository.findByAccountId(transaction.getAccountId());
-        if (acc != null) {
-            String type = transaction.getTransactionType() != null
-                    ? transaction.getTransactionType().trim().toUpperCase()
-                    : "";
-
-            double newBalance = acc.getBalance();
-            if ("DEPOSIT".equals(type)) {
-                newBalance += transaction.getAmount();
-            } else if ("WITHDRAWAL".equals(type)) {
-                newBalance -= transaction.getAmount();
-            }
-            acc.setBalance(newBalance);
-            accountRepository.save(acc);
+        double newBalance = acc.getBalance();
+        if ("DEPOSIT".equals(type)) {
+            newBalance += amount;
+        } else if ("WITHDRAWAL".equals(type)) {
+            newBalance -= amount;
         }
+        acc.setBalance(newBalance);
+        accountRepository.save(acc);
 
         return saved.getTransactionId();
     }
 
     @Override
     public void updateTransaction(Transactions transaction) throws SQLException {
-        // NOTE: Day 8 does not require re-adjusting account balance on update.
-        // Persist the new values as-is.
         if (transaction.getTransactionDate() == null) {
             transaction.setTransactionDate(new Date());
         }

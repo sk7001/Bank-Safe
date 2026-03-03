@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.edutech.progressive.config.DatabaseConnectionManager;
 import com.edutech.progressive.entity.Accounts;
+import com.edutech.progressive.exception.AccountNotFoundException;
 
 public class AccountDAOImpl implements AccountDAO {
 
@@ -67,6 +68,11 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public Accounts getAccountById(int accountId) throws SQLException {
+        // ✅ Day 9: invalid id should immediately raise “not found”
+        if (accountId <= 0) {
+            throw new AccountNotFoundException("Account not found for id: " + accountId);
+        }
+
         final String sql = "SELECT account_id, customer_id, balance FROM accounts WHERE account_id = ?";
         Accounts acc = null;
 
@@ -81,6 +87,12 @@ public class AccountDAOImpl implements AccountDAO {
                 }
             }
         }
+
+        // ✅ Day 9: when missing, throw instead of returning null
+        if (acc == null) {
+            throw new AccountNotFoundException("Account not found for id: " + accountId);
+        }
+
         return acc;
     }
 
@@ -92,7 +104,6 @@ public class AccountDAOImpl implements AccountDAO {
         try (Connection conn = DatabaseConnectionManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Use BigDecimal for DECIMAL columns to avoid driver-specific rounding/scale issues
             ps.setInt(1, accounts.getCustomerId());
             ps.setBigDecimal(2, BigDecimal.valueOf(accounts.getBalance()));
 
@@ -104,7 +115,6 @@ public class AccountDAOImpl implements AccountDAO {
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {
                     generatedId = keys.getInt(1);
-                    // Set it back on the entity for callers that rely on this
                     accounts.setAccountId(generatedId);
                 } else {
                     throw new SQLException("Insert account succeeded but no ID obtained.");
@@ -124,7 +134,7 @@ public class AccountDAOImpl implements AccountDAO {
             ps.setInt(1, accounts.getCustomerId());
             ps.setBigDecimal(2, BigDecimal.valueOf(accounts.getBalance()));
             ps.setInt(3, accounts.getAccountId());
-            ps.executeUpdate(); // DML -> executeUpdate(), never attempt to read a ResultSet
+            ps.executeUpdate();
         }
     }
 
@@ -136,7 +146,7 @@ public class AccountDAOImpl implements AccountDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, accountId);
-            ps.executeUpdate(); // DML -> executeUpdate()
+            ps.executeUpdate();
         }
     }
 
@@ -146,7 +156,6 @@ public class AccountDAOImpl implements AccountDAO {
         acc.setAccountId(rs.getInt("account_id"));
         acc.setCustomerId(rs.getInt("customer_id"));
 
-        // Read DECIMAL safely; fallback to 0.0 if null
         BigDecimal bal = rs.getBigDecimal("balance");
         acc.setBalance(bal != null ? bal.doubleValue() : 0.0);
 

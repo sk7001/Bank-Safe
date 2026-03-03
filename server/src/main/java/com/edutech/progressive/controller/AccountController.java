@@ -1,6 +1,7 @@
 package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Accounts;
+import com.edutech.progressive.exception.AccountNotFoundException;
 import com.edutech.progressive.service.AccountService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,17 +36,18 @@ public class AccountController {
 
     // GET /accounts/{accountId}
     @GetMapping("/{accountId}")
-    public ResponseEntity<Accounts> getAccountById(@PathVariable int accountId) {
+    public ResponseEntity<?> getAccountById(@PathVariable int accountId) {
         try {
             Accounts acc = accountService.getAccountById(accountId);
             return ResponseEntity.ok(acc);
-        } catch (SQLException e) {
-            return ResponseEntity.internalServerError().build();
+        } catch (AccountNotFoundException | SQLException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     // GET /accounts/user/{userId}
-    // Day 7 tests typically expect userId as an int and a JSON list in the response.
+    // Day 7 tests typically expect userId as an int and a JSON list in the
+    // response.
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Accounts>> getAccountsByUser(@PathVariable("userId") int userId) {
         try {

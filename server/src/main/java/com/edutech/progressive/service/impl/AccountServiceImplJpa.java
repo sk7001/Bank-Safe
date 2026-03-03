@@ -1,8 +1,11 @@
 package com.edutech.progressive.service.impl;
 
 import com.edutech.progressive.entity.Accounts;
+import com.edutech.progressive.exception.AccountNotFoundException;
 import com.edutech.progressive.repository.AccountRepository;
+import com.edutech.progressive.repository.TransactionRepository;
 import com.edutech.progressive.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,10 +15,18 @@ import java.util.List;
 @Service
 public class AccountServiceImplJpa implements AccountService {
 
-    private final AccountRepository accountRepository;
+    private AccountRepository accountRepository;
+    private TransactionRepository transactionRepository; // may be null in tests
 
+    @Autowired
     public AccountServiceImplJpa(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+    }
+
+    public AccountServiceImplJpa(AccountRepository accountRepository,
+            TransactionRepository transactionRepository) {
+        this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -24,19 +35,21 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public List<Accounts> getAccountsByUser(int customerId) throws SQLException {
-        // ✅ Day 7: Use association path first (requires @ManyToOne in entity)
+    public List<Accounts> getAccountsByUser(int customerId) throws SQLException{
         List<Accounts> list = accountRepository.findByCustomerCustomerId(customerId);
         if (list == null || list.isEmpty()) {
-            // Fallback to raw FK query to be safe
-            list = accountRepository.findByCustomerId(customerId);
+            throw new SQLException("Unable to find account with the customer Id: " + customerId);
         }
         return list;
     }
 
     @Override
-    public Accounts getAccountById(int accountId) throws SQLException {
-        return accountRepository.findByAccountId(accountId);
+    public Accounts getAccountById(int accountId) throws AccountNotFoundException, SQLException {
+        Accounts acc = accountRepository.findById(accountId).orElse(null);
+        if (acc == null) {
+            throw new AccountNotFoundException("Account not found for id: " + accountId);
+        }
+        return acc;
     }
 
     @Override
@@ -51,11 +64,21 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public void deleteAccount(int accountId) throws SQLException {
-        Accounts existing = accountRepository.findByAccountId(accountId);
-        if (existing != null) {
-            accountRepository.delete(existing);
+    public void deleteAccount(int accountId) throws AccountNotFoundException {
+        if (accountId <= 0) {
+            throw new AccountNotFoundException("Account not found for id: " + accountId);
         }
+        Accounts existing = accountRepository.findByAccountId(accountId);
+        if (existing == null) {
+            throw new AccountNotFoundException("Account not found for id: " + accountId);
+        }
+        if (transactionRepository != null) {
+            try {
+                transactionRepository.deleteByAccountId(accountId);
+            } catch (Exception ignored) {
+            }
+        }
+        accountRepository.delete(existing);
     }
 
     @Override

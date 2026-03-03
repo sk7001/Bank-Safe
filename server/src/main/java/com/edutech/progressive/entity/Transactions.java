@@ -25,8 +25,15 @@ public class Transactions {
     @Column(name = "transaction_date", nullable = false)
     private Date transactionDate;
 
-    public Transactions() {
-    }
+    /**
+     * Association to Accounts. We keep FK field (accountId) as the write source of truth.
+     * insertable/updatable=false to avoid column write conflicts.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", insertable = false, updatable = false)
+    private Accounts accounts;
+
+    public Transactions() {}
 
     public Transactions(int transactionId, int accountId, double amount, Date transactionDate, String transactionType) {
         this.transactionId = transactionId;
@@ -36,43 +43,27 @@ public class Transactions {
         this.transactionType = transactionType;
     }
 
-    public int getTransactionId() {
-        return transactionId;
-    }
+    public int getTransactionId() { return transactionId; }
+    public void setTransactionId(int transactionId) { this.transactionId = transactionId; }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
-    }
+    public int getAccountId() { return accountId; }
+    public void setAccountId(int accountId) { this.accountId = accountId; }
 
-    public int getAccountId() {
-        return accountId;
-    }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
+    public String getTransactionType() { return transactionType; }
+    public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
 
-    public double getAmount() {
-        return amount;
-    }
+    public Date getTransactionDate() { return transactionDate; }
+    public void setTransactionDate(Date transactionDate) { this.transactionDate = transactionDate; }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    public Accounts getAccounts() { return accounts; }
 
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
+    /**
+     * Day 9 tests call setAccounts(...). We intentionally do not auto-sync FK here.
+     */
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
     }
 }

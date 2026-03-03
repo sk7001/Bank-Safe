@@ -35,7 +35,6 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDAO.updateTransaction(transaction);
     }
 
-    @Override
     public void deleteTransaction(int transactionId) throws SQLException {
         transactionDAO.deleteTransaction(transactionId);
     }
@@ -44,4 +43,6 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transactions> getTransactionsByCustomerId(int customerId) throws SQLException {
         return transactionDAO.getTransactionsByCustomerId(customerId);
     }
+
+   
 }

@@ -14,7 +14,6 @@ public class AccountServiceImplArraylist {
     private static List<Accounts> accountsList;
 
     public AccountServiceImplArraylist() {
-        // initialize the in-memory list
         accountsList = new ArrayList<>();
     }
 
@@ -24,7 +23,7 @@ public class AccountServiceImplArraylist {
 
     public List<Accounts> getAllAccountsSortedByBalance() throws SQLException {
         List<Accounts> copy = new ArrayList<>(accountsList);
-        Collections.sort(copy); // uses Accounts.compareTo (by balance)
+        Collections.sort(copy);
         return copy;
     }
 
