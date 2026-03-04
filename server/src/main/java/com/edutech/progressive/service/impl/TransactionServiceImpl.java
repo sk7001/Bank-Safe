@@ -7,9 +7,9 @@ import com.edutech.progressive.service.TransactionService;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionDAO transactionDAO;
+public class TransactionServiceImpl implements TransactionService {
+    private TransactionDAO transactionDAO;
 
     public TransactionServiceImpl(TransactionDAO transactionDAO) {
         this.transactionDAO = transactionDAO;
@@ -35,14 +35,14 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDAO.updateTransaction(transaction);
     }
 
+    @Override
     public void deleteTransaction(int transactionId) throws SQLException {
         transactionDAO.deleteTransaction(transactionId);
     }
 
     @Override
     public List<Transactions> getTransactionsByCustomerId(int customerId) throws SQLException {
-        return transactionDAO.getTransactionsByCustomerId(customerId);
+        // TODO Auto-generated method stub
+        return null;
     }
-
-   
 }

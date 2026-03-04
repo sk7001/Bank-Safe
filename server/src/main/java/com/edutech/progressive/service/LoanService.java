@@ -1,16 +1,17 @@
 package com.edutech.progressive.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.edutech.progressive.entity.Loan;
 import com.edutech.progressive.repository.LoanRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class LoanService {
+    private final LoanRepository loanRepository;
 
-    private LoanRepository loanRepository;
     @Autowired
     public LoanService(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
@@ -29,14 +30,10 @@ public class LoanService {
     }
 
     public void updateLoan(Loan loan) {
-        Loan old= loanRepository.findById(loan.getId()).orElseThrow();
-        old.setAmount(loan.getAmount());
-        old.setDuration(loan.getDuration());
-        old.setLoanType(loan.getLoanType());
-        loanRepository.save(old);
+        loanRepository.save(loan);
     }
 
-    public void deleteLoan(Long id) {   
+    public void deleteLoan(Long id) {
         loanRepository.deleteById(id);
     }
 }

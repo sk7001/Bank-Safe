@@ -1,5 +1,6 @@
 package com.edutech.progressive.service.impl;
 
+
 import com.edutech.progressive.entity.Accounts;
 import com.edutech.progressive.exception.AccountNotFoundException;
 import com.edutech.progressive.repository.AccountRepository;
@@ -11,22 +12,18 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImplJpa implements AccountService {
 
-    private AccountRepository accountRepository;
-    private TransactionRepository transactionRepository; // may be null in tests
+    @Autowired
+    TransactionRepository transactionRepository;
 
+    private AccountRepository accountRepository;
     @Autowired
     public AccountServiceImplJpa(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-    }
-
-    public AccountServiceImplJpa(AccountRepository accountRepository,
-            TransactionRepository transactionRepository) {
-        this.accountRepository = accountRepository;
-        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -35,56 +32,42 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public List<Accounts> getAccountsByUser(int customerId) throws SQLException{
-        List<Accounts> list = accountRepository.findByCustomerCustomerId(customerId);
-        if (list == null || list.isEmpty()) {
-            throw new SQLException("Unable to find account with the customer Id: " + customerId);
+    public List<Accounts> getAccountsByUser(int customerId) throws SQLException {
+        return accountRepository.getAccountsByCustomerCustomerId(customerId);
+    }
+
+    @Override
+    public Accounts getAccountById(int accountId) {
+        Optional<Accounts> accounts = accountRepository.findById(accountId);
+        if (accounts.isPresent()) {
+            return accounts.get();
         }
-        return list;
-    }
-
-    @Override
-    public Accounts getAccountById(int accountId) throws AccountNotFoundException, SQLException {
-        Accounts acc = accountRepository.findById(accountId).orElse(null);
-        if (acc == null) {
-            throw new AccountNotFoundException("Account not found for id: " + accountId);
+        else {
+            throw new AccountNotFoundException("No accounts found linked with this accountId : " + accountId);
         }
-        return acc;
     }
 
     @Override
-    public int addAccount(Accounts accounts) throws SQLException {
-        Accounts saved = accountRepository.save(accounts);
-        return saved.getAccountId();
+    public int addAccount(Accounts accounts) {
+        return accountRepository.save(accounts).getAccountId();
     }
 
     @Override
-    public void updateAccount(Accounts accounts) throws SQLException {
+    public void updateAccount(Accounts accounts) {
         accountRepository.save(accounts);
     }
 
     @Override
-    public void deleteAccount(int accountId) throws AccountNotFoundException {
-        if (accountId <= 0) {
-            throw new AccountNotFoundException("Account not found for id: " + accountId);
-        }
-        Accounts existing = accountRepository.findByAccountId(accountId);
-        if (existing == null) {
-            throw new AccountNotFoundException("Account not found for id: " + accountId);
-        }
-        if (transactionRepository != null) {
-            try {
-                transactionRepository.deleteByAccountId(accountId);
-            } catch (Exception ignored) {
-            }
-        }
-        accountRepository.delete(existing);
+    public void deleteAccount(int accountId) {
+        transactionRepository.deleteByAccountId(accountId);
+        accountRepository.deleteById(accountId);
     }
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalance() throws SQLException {
-        List<Accounts> list = accountRepository.findAll();
-        list.sort(Comparator.comparingDouble(Accounts::getBalance));
-        return list;
+        List<Accounts> sortedAccounts = getAllAccounts();
+        sortedAccounts.sort(Comparator.comparingDouble(Accounts::getBalance)); // Sort by account balance
+        return sortedAccounts;
     }
 }
+
