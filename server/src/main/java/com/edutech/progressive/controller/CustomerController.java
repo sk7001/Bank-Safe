@@ -7,6 +7,7 @@ import com.edutech.progressive.service.impl.CustomerServiceImplJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -46,17 +47,21 @@ public class CustomerController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> addCustomer(@RequestBody Customers customers) {
-        try {
-            int customerId = customerServiceJpa.addCustomer(customers);
-            return new ResponseEntity<>(customerId, HttpStatus.CREATED);
-        } catch (CustomerAlreadyExistsException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (SQLException e) {
-            return new ResponseEntity<>("Unable to process your request at the moment", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
+@PostMapping
+@PreAuthorize("hasAuthority('ADMIN') or hasRole('ADMIN')") // ✅ covers both JWT ('ADMIN') and WithMockUser('ROLE_ADMIN')
+public ResponseEntity<?> addCustomer(@RequestBody Customers customers) {
+    try {
+        int customerId = customerServiceJpa.addCustomer(customers);
+        return new ResponseEntity<>(customerId, HttpStatus.CREATED);
+    } catch (CustomerAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    } catch (SQLException e) {
+        return new ResponseEntity<>("Unable to process your request at the moment",
+                                    HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
+
 
     @PutMapping("/{customerId}")
     public ResponseEntity<?> updateCustomer(@PathVariable int customerId, @RequestBody Customers customers) {
