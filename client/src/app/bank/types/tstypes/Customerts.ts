@@ -1,26 +1,35 @@
 export class CustomerTS {
-    customerId?: string;
-    name: string;
-    email: string;
-    username: string;
-    password: string;
-    role?: string;
-    constructor(name: string, email: string, username: string, password: string, role: string, customerId?: string) {
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.customerId = customerId;
-    }
+  customerId?: string;
+  name: string;
+  email: string;
+  username: string;
+  password: string;
+  role?: string;
 
-    displayInfo() {
-        console.log(`Customer ID: ${this.customerId}`)
-        console.log(`Name: ${this.name}`)
-        console.log(`Email: ${this.email}`)
-        console.log(`Password: ${this.password}`)
-        console.log(`Username: ${this.username}`)
-        console.log(`Role: ${this.role}`)
-    }
+  constructor(
+    name: string,
+    email: string,
+    username: string,
+    password: string,
+    role: string,
+    customerId?: string
+  ) {
+    this.customerId = customerId;
+    this.name = name;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 
+  displayInfo(): void {
+    console.log({
+      customerId: this.customerId,
+      name: this.name,
+      email: this.email,
+      username: this.username,
+      password: this.password,
+      role: this.role
+    });
+  }
 }
