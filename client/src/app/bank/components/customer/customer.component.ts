@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomerTS } from '../../types/tstypes/Customerts';
 
 @Component({
   selector: 'app-customers',
@@ -9,37 +8,32 @@ import { CustomerTS } from '../../types/tstypes/Customerts';
 })
 export class CustomersComponent {
 
-  isFormSubmitted: boolean | undefined;
-  customerSuccess$: any;
-  customerError$: any;
+  isFormSubmitted = false;
+  customerSuccess = '';
+  customerError = '';
   customerForm!: FormGroup;
-  customer: CustomerTS;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.customer = new CustomerTS("", "", "", "", "", "");
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.customerForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
   onSubmit(): void {
     this.isFormSubmitted = true;
 
-    const value = this.customerForm.value;
+    if (this.customerForm.invalid) {
+      this.customerError = "Please correct the errors in the form.";
+      this.customerSuccess = "";
+      return;
+    }
 
-    this.customer = new CustomerTS(
-      value.name,
-      value.email,
-      value.username,
-      value.password,
-      "",
-      ""
-    );
+    this.customerSuccess = "Success!";
+    this.customerError = "";
   }
 }

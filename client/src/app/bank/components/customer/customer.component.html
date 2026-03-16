@@ -1,24 +1,20 @@
 <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
 
-  <label for="name">Name</label>
+  <label>Name</label>
   <input id="name" type="text" formControlName="name">
 
-  <label for="email">Email</label>
+  <label>Email</label>
   <input id="email" type="email" formControlName="email">
 
-  <label for="username">Username</label>
+  <label>Username</label>
   <input id="username" type="text" formControlName="username">
 
-  <label for="password">Password</label>
+  <label>Password</label>
   <input id="password" type="password" formControlName="password">
 
-  <button type="submit">Submit</button>
+  <button type="submit" [disabled]="customerForm.invalid">Submit</button>
 
 </form>
 
-<div *ngIf="isFormSubmitted">
-  <p>Name: {{ customer.name }}</p>
-  <p>Email: {{ customer.email }}</p>
-  <p>Username: {{ customer.username }}</p>
-  <p>Password: {{ customer.password }}</p>
-</div>
+<div *ngIf="customerError">{{ customerError }}</div>
+<div *ngIf="customerSuccess">{{ customerSuccess }}</div>
