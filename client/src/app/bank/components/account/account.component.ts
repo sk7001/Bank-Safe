@@ -1,7 +1,8 @@
-// src/app/accounts/accounts.component.ts
 import { Component, OnInit } from '@angular/core';
-import { AccountTS } from '../../types/tstypes/Accountts';
+import { Account } from '../../types/Account';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BankService } from '../../services/bank.service';
+import { Customer } from '../../types/Customer';
 
 @Component({
   selector: 'app-accounts',
@@ -10,25 +11,46 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AccountComponent implements OnInit {
   accountForm!: FormGroup;
-  account: AccountTS | undefined;
+  account: Account | undefined;
+  customers: Customer[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private banksService: BankService
+  ) { }
 
   ngOnInit(): void {
-    // No need to fetch data from a service since we are using hardcoded data
-    this.accountForm = this.fb.group({
-      accountId: ["", [Validators.required, Validators.min(1)]],
-      customerId: ["", [Validators.required]],
+    this.loadCustomers();
+    this.accountForm = this.formBuilder.group({
+      customer: [null, [Validators.required]],
       balance: ["", [Validators.required, Validators.min(0)]],
     });
-    this.account = new AccountTS("1", 1000.00, "1");
+  }
+
+  loadCustomers(): void {
+    this.banksService.getAllCustomers().subscribe({
+      next: (response) => {
+        this.customers = response;
+      },
+      error: (error) => console.log('Error in loading customers')
+    })
   }
 
   onSubmit(): void {
     if (this.accountForm.valid) {
-      console.log("Form Submitted:", this.accountForm.value);
+      this.banksService.addAccount(this.accountForm.value).subscribe({
+        next: (response) => {
+          this.successMessage = 'Account created successfully';
+          this.errorMessage = '';
+          this.accountForm.reset();
+        },
+        error: (error) => this.errorMessage = error.error
+      });
     } else {
-      console.log("Form is invalid. Please fix the errors.");
+      this.errorMessage = 'Please fill out all required fields correctly.';
+      this.successMessage = '';
     }
   }
 }

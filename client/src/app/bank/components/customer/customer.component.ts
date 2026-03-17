@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerTS } from '../../types/tstypes/Customerts';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BankService } from '../../services/bank.service';
+import { Customer } from '../../types/Customer';
 
 @Component({
   selector: 'app-customers',
@@ -12,14 +13,13 @@ export class CustomersComponent implements OnInit {
   customerSuccess: string = '';
   customerError: string = '';
   customerForm!: FormGroup;
+  customer: Customer | null = null;
 
-  customers: CustomerTS[] = [
-    new CustomerTS('John Doe', 'john@example.com', 'john_doe', 'password123', 'User', '1'),
-    new CustomerTS('John Doe1', 'john1@example.com', 'john_doe1', 'password123', 'Admin', '2'),
-  ];
+  constructor(
+    private formBuilder: FormBuilder,
+    private banksService: BankService
+  ) { }
 
-  constructor(private formBuilder: FormBuilder) { }
-  
   ngOnInit(): void {
     this.customerForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -32,6 +32,7 @@ export class CustomersComponent implements OnInit {
           Validators.minLength(8),
         ],
       ],
+      role: ['', Validators.required]
     });
   }
 
@@ -44,15 +45,19 @@ export class CustomersComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.isFormSubmitted = true;
-
     if (this.customerForm.valid) {
-      const { name, email, username, password } = this.customerForm.value;
-      this.customerSuccess = `Customer created successfully! Name: ${name}, Email: ${email}, Username: ${username}.`;
-      this.customerError = ''; 
+      this.banksService.addCustomer(this.customerForm.value).subscribe({
+        next: (response) => {
+          this.customer = response;
+          this.customerSuccess = 'Customer created successfully';
+          this.customerError = '';
+          this.customerForm.reset();
+        },
+        error: (error) => this.customerError = error.error
+      });
     } else {
-      this.customerError = 'Please correct the errors in the form.';
-      this.customerSuccess = ''; 
+      this.customerError = 'Please fill out all required fields correctly.';
+      this.customerSuccess = '';
     }
   }
 }

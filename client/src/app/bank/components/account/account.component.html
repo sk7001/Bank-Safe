@@ -1,25 +1,37 @@
 <div>
   <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="form">
-    <label for="accountId">Account ID:</label>
-    <input type="text" id="accountId" formControlName="accountId" />
-    <div *ngIf="accountForm.get('accountId')?.invalid && accountForm.get('accountId')?.touched">
-      <small *ngIf="accountForm.get('accountId')?.errors?.['required']">Account ID is required.</small>
-      <small *ngIf="accountForm.get('accountId')?.errors?.['min']">Account ID must be not null.</small>
+    <h2>Create Account</h2>
+    <div class="form-group">
+      <label for="customer">Customer:</label>
+      <select formControlName="customer">
+        <option value="">Select a customer</option>
+        <option *ngFor="let customer of customers" [ngValue]="customer">
+          {{ customer.name }}
+        </option>
+      </select>
+      <div *ngIf="accountForm.get('customer')?.invalid && (accountForm.get('customer')?.touched )" class="error">
+        <small *ngIf="accountForm.get('customer')?.hasError('required')">Customer is required.</small>
+      </div>
     </div>
 
-    <label for="customerId">Customer ID:</label>
-    <input type="text" id="customerId" formControlName="customerId" />
-    <div *ngIf="accountForm.get('customerId')?.invalid && accountForm.get('customerId')?.touched">
-      <small *ngIf="accountForm.get('customerId')?.errors?.['required']">Customer ID is required.</small>
+    <div class="form-group">
+      <label for="balance">Balance:</label>
+      <input type="text" id="balance" formControlName="balance" />
+      <div *ngIf="accountForm.get('balance')?.invalid && accountForm.get('balance')?.touched">
+        <small *ngIf="accountForm.get('balance')?.errors?.['required']">Balance is required.</small>
+        <small *ngIf="accountForm.get('balance')?.errors?.['min']">Balance must be non-negative.</small>
+      </div>
     </div>
 
-    <label for="balance">Balance:</label>
-    <input type="text" id="balance" formControlName="balance" />
-    <div *ngIf="accountForm.get('balance')?.invalid && accountForm.get('balance')?.touched">
-      <small *ngIf="accountForm.get('balance')?.errors?.['required']">Balance is required.</small>
-      <small *ngIf="accountForm.get('balance')?.errors?.['min']">Balance must be non-negative.</small>
+    <button type="submit" class="btn-submit" [disabled]="accountForm.invalid">Create Account</button>
+    <a routerLink="/bank" class="task-list" class="task-list">Dashboard</a>
+
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
     </div>
 
-    <button type="submit" [disabled]="accountForm.invalid">Submit</button>
+    <div *ngIf="successMessage" class="success">
+      {{ successMessage }}
+    </div>
   </form>
 </div>
