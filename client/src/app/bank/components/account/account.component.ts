@@ -9,27 +9,26 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-onSubmit() {
-throw new Error('Method not implemented.');
-}
   accountForm!: FormGroup;
   account: AccountTS | undefined;
-  // accountForm: any;
-  formBuilder!: FormBuilder;
-  validateAccountId: any;
-  validateNonNegativeAmount: any;
-  // account: Account;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     // No need to fetch data from a service since we are using hardcoded data
     this.accountForm = this.fb.group({
-      account_id: ["", [Validators.required]],
-      customer_id: ["", [Validators.required]],
-      balance: ["", [Validators.required]],
+      accountId: ["", [Validators.required, Validators.min(1)]],
+      customerId: ["", [Validators.required]],
+      balance: ["", [Validators.required, Validators.min(0)]],
     });
-    this.account = new AccountTS("1" ,1000.00,"1");
+    this.account = new AccountTS("1", 1000.00, "1");
+  }
 
+  onSubmit(): void {
+    if (this.accountForm.valid) {
+      console.log("Form Submitted:", this.accountForm.value);
+    } else {
+      console.log("Form is invalid. Please fix the errors.");
+    }
   }
 }

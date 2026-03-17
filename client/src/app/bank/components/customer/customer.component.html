@@ -1,20 +1,53 @@
-<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" [formGroup]="customerForm" class="form">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name" class="form-control" />
+    <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" class="error">
+      <small *ngIf="customerForm.get('name')?.hasError('required')"> Name is required.</small>
+    </div>
+  </div>
 
-  <label>Name</label>
-  <input id="name" type="text" formControlName="name">
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email" class="form-control" />
+    <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" class="error">
+      <small *ngIf="customerForm.get('email')?.hasError('required')">Email is required.</small>
+      <small *ngIf="customerForm.get('email')?.hasError('email')">Please enter a valid email.</small>
+  </div>
+  </div>
 
-  <label>Email</label>
-  <input id="email" type="email" formControlName="email">
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" id="username" formControlName="username" class="form-control" />
+    <div *ngIf="customerForm.get('username')?.invalid && customerForm.get('username')?.touched" class="error">
+      <small *ngIf="customerForm.get('username')?.hasError('required')">Username is
+          required.</small>
+      <small *ngIf="customerForm.get('username')?.hasError('specialCharacters')">Username cannot
+          contain special characters.</small>
+  </div>
+  </div>
 
-  <label>Username</label>
-  <input id="username" type="text" formControlName="username">
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" formControlName="password" class="form-control" />
+    <div *ngIf="customerForm.get('location')?.invalid && customerForm.get('location')?.touched" class="error">
+      <small *ngIf="customerForm.get('password')?.hasError('required')">Password is
+          required.</small>
+      <small *ngIf="customerForm.get('password')?.hasError('minlength')">Password must be at least
+          8 characters long.</small>
+  </div>
+  </div>
 
-  <label>Password</label>
-  <input id="password" type="password" formControlName="password">
+  <button type="submit" class="btn-submit" [disabled]="customerForm.invalid">
+    Create Customer
+  </button>
+  <a routerLink="/bank" class="task-list" class="task-list">Dashboard</a>
 
-  <button type="submit" [disabled]="customerForm.invalid">Submit</button>
+  <div *ngIf="customerError" class="error">
+    {{ customerError }}
+  </div>
 
+  <div *ngIf="customerSuccess" class="success">
+    {{ customerSuccess }}
+  </div>
 </form>
-
-<div *ngIf="customerError">{{ customerError }}</div>
-<div *ngIf="customerSuccess">{{ customerSuccess }}</div>
