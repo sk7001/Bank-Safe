@@ -33,6 +33,7 @@ export class EditAccountComponent implements OnInit {
         });
         this.route.params.subscribe(params => {
             this.accountId = params['accountId'];
+
             this.loadAccountDetails();
         });
     }

@@ -15,9 +15,9 @@ export class DashboardComponent implements OnInit {
     accounts: Account[] = [];
     transactions: Transaction[] = [];
     loggedInCustomer!: Customer;
-
     role!: string;
     userId!: string;
+
 
     constructor(private bankService: BankService, private router: Router) { }
 

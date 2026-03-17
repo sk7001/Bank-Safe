@@ -8,6 +8,7 @@ import com.edutech.progressive.repository.CustomerRepository;
 import com.edutech.progressive.repository.TransactionRepository;
 import com.edutech.progressive.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImplJpa implements CustomerService {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     TransactionRepository transactionRepository;
@@ -47,6 +51,11 @@ public class CustomerServiceImplJpa implements CustomerService {
         if (existingCustomer != null) {
             throw new CustomerAlreadyExistsException("Customer with give email already exists : " + customers.getEmail());
         }
+        Customers oldUser = customerRepository.findByUsername(customers.getUsername());
+        if (oldUser != null) {
+            throw new CustomerAlreadyExistsException("Customer with give username already exists : " + customers.getUsername());
+        }
+        customers.setPassword(passwordEncoder.encode(customers.getPassword()));
         return customerRepository.save(customers).getCustomerId();
     }
 
@@ -56,7 +65,14 @@ public class CustomerServiceImplJpa implements CustomerService {
         if (existingCustomer != null && customers.getCustomerId() != existingCustomer.getCustomerId()) {
             throw new CustomerAlreadyExistsException("Customer with give email already exists : " + customers.getEmail());
         }
+        Customers oldUser = customerRepository.findByUsername(customers.getUsername());
+        if (oldUser != null && customers.getCustomerId() != oldUser.getCustomerId()) {
+            throw new CustomerAlreadyExistsException("Customer with give username already exists : " + customers.getUsername());
+        }
         if (!customers.getRole().isBlank()) {
+            if (!existingCustomer.getPassword().equals(customers.getPassword())) {
+                customers.setPassword(passwordEncoder.encode(customers.getPassword()));
+            }
             customerRepository.save(customers);
         } else {
             throw new SQLException("Role for a customer cannot be empty");

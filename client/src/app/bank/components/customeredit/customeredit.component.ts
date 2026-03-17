@@ -16,6 +16,7 @@ export class EditCustomerComponent implements OnInit {
     customer!: Customer;
     customerId!: number;
 
+
     constructor(
         private formBuilder: FormBuilder,
         private banksService: BankService,
@@ -39,6 +40,7 @@ export class EditCustomerComponent implements OnInit {
         });
         this.route.params.subscribe(params => {
             this.customerId = params['customerId'];
+
             this.loadCustomerDetails();
         });
     }
@@ -104,4 +106,3 @@ export class EditCustomerComponent implements OnInit {
     }
 
 }
-
