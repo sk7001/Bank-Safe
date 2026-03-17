@@ -78,4 +78,64 @@
             </table>
         </section>
     </ng-container>
+    <ng-container *ngIf="role !== 'ADMIN'">
+        <section class="card">
+            <h3>Customers Details</h3>
+            <div *ngIf="loggedInCustomer">
+                <p><strong>Name:</strong> {{ loggedInCustomer.name }}</p>
+                <p><strong>Email:</strong> {{ loggedInCustomer.email }}</p>
+                <p><strong>Username:</strong> {{ loggedInCustomer.username }}</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Accounts List</h3>
+            <div *ngIf="accounts.length === 0" class="empty-list">
+                No accounts available.
+            </div>
+            <table *ngIf="accounts.length !== 0" class="table">
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Customer ID</th>
+                        <th>Customer Name</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let account of accounts">
+                        <td>{{ account.accountId}}</td>
+                        <td>{{ account.customer.customerId }}</td>
+                        <td>{{ account.customer.name }}</td>
+                        <td>{{ account.balance }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h3>Transactions List</h3>
+            <div *ngIf="transactions.length === 0" class="empty-list">
+                No accounts available.
+            </div>
+            <table *ngIf="transactions.length !== 0" class="table">
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>transactionType</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions">
+                        <td>{{ transaction.accounts?.accountId }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.transactionDate | date:'longDate'}}</td>
+                        <td>{{ transaction.transactionType }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </ng-container>
 </div>

@@ -1,24 +1,44 @@
-<!-- transaction-form.component.html -->
-<form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
-    
-    <div class="form-group">
-      <label for="transaction_id">Account ID:</label>
-      <input type="number" id="accountId" formControlName="accountId" />
+<h2 style="text-align: center">Perform a Transaction</h2>
+<form (ngSubmit)="onSubmit()" [formGroup]="transactionForm" class="transaction-form">
+  <div class="form-group">
+    <label for="userId">Account:</label>
+    <select formControlName="accounts">
+      <option value="">Select Account</option>
+      <option *ngFor="let account of accounts" [ngValue]="account">
+        {{ account.accountId }}
+      </option>
+    </select>
+    <div *ngIf="transactionForm.get('account')?.invalid && (transactionForm.get('account')?.touched )" class="error">
+      <small *ngIf="transactionForm.get('account')?.hasError('required')">Account is required.</small>
     </div>
-    <div class="form-group">
-      <label for="transaction_id">Transaction Type:</label>
-      <input type="number" id="transactionType" formControlName="transactionType" />
+  </div>
+
+  <div class="form-group">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" formControlName="amount" />
+    <div *ngIf="transactionForm.get('amount')?.invalid && (transactionForm.get('amount')?.touched )" class="error">
+      <small *ngIf="transactionForm.get('amount')?.hasError('required')">Amount is required.</small>
     </div>
-    <div class="form-group">
-      <label for="transaction_id">Transaction Amount:</label>
-      <input type="number" id="amount" formControlName="amount" />
+  </div>
+
+  <div class="form-group">
+    <label for="transactionType">Transaction Type:</label>
+    <input type="radio" id="transactionType" formControlName="transactionType" value="credit" /> Credit
+    <input type="radio" id="transactionType" formControlName="transactionType" value="debit" /> Debit
+    <div *ngIf="transactionForm.get('transactionType')?.invalid && (transactionForm.get('transactionType')?.touched )" class="error">
+      <small *ngIf="transactionForm.get('transactionType')?.hasError('required')">Transaction Type is required.</small>
     </div>
-    <div class="form-group">
-      <label for="transactionDate">Transaction Date:</label>
-      <input type="number" id="transactionDate" formControlName="transactionDate" />
+  </div>
+
+  <button type="submit" class="btn-submit" [disabled]="transactionForm.invalid">Create Transaction</button>
+  <a routerLink="/bank" class="task-list" class="task-list">Dashboard</a>
+
+  <ng-container>
+    <div *ngIf="transactionError" class="error">
+      {{ transactionError }}
     </div>
-    <!-- Similar form controls for other properties -->
-  
-    <button type="submit" [disabled]="!transactionForm.valid">Submit</button>
-  </form>
-  
+    <div *ngIf="transactionSuccess" class="success">
+      {{ transactionSuccess }}
+    </div>
+  </ng-container>
+</form>
