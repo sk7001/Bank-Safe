@@ -1,36 +1,35 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+// src/app/accounts/accounts.component.ts
+import { Component, OnInit } from '@angular/core';
 import { AccountTS } from '../../types/tstypes/Accountts';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-account',
+  selector: 'app-accounts',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent {
-
+export class AccountComponent implements OnInit {
+onSubmit() {
+throw new Error('Method not implemented.');
+}
   accountForm!: FormGroup;
   account: AccountTS | undefined;
+  // accountForm: any;
+  formBuilder!: FormBuilder;
+  validateAccountId: any;
+  validateNonNegativeAmount: any;
+  // account: Account;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    // No need to fetch data from a service since we are using hardcoded data
     this.accountForm = this.fb.group({
-      accountId: ['', [Validators.required, Validators.min(1)]],
-      customerId: ['', Validators.required],
-      balance: ['', [Validators.required, Validators.min(0)]]
+      account_id: ["", [Validators.required]],
+      customer_id: ["", [Validators.required]],
+      balance: ["", [Validators.required]],
     });
-  }
+    this.account = new AccountTS("1" ,1000.00,"1");
 
-  onSubmit(): void {
-    console.log("Account Submitted:", this.accountForm.value);
-
-    if (this.accountForm.valid) {
-      this.account = new AccountTS(
-        this.accountForm.value.customerId,
-        this.accountForm.value.balance,
-        this.accountForm.value.accountId
-      );
-    }
   }
 }

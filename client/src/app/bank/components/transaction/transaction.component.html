@@ -1,31 +1,24 @@
+<!-- transaction-form.component.html -->
 <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
-
-  <!-- <label for="customerId">Customer ID</label>
-  <input id="customerId" type="text" formControlName="customerId"> -->
-
-  <label for="transactionId">Transaction ID</label>
-  <input id="transactionId" type="text" formControlName="transactionId">
-
-  <label for="accountId">Account ID</label>
-  <input id="accountId" type="text" formControlName="accountId">
-
-  <label for="transactionType">Transaction Type</label>
-  <input id="transactionType" type="text" formControlName="transactionType">
-
-  <label for="amount">Amount</label>
-  <input id="amount" type="number" formControlName="amount">
-
-  <label for="transactionDate">Transaction Date</label>
-  <input id="transactionDate" type="date" formControlName="transactionDate">
-
-  <button type="submit" [disabled]="transactionForm.invalid">Submit</button>
-</form>
-<!-- 
-<div *ngIf="transaction">
-  <p>Customer ID: {{ transaction.customerId }}</p>
-  <p>Transaction ID: {{ transaction.transactionId }}</p>
-  <p>Account ID: {{ transaction.accountId }}</p>
-  <p>Type: {{ transaction.transactionType }}</p>
-  <p>Amount: {{ transaction.amount }}</p>
-  <p>Date: {{ transaction.transactionDate }}</p>
-</div> -->
+    
+    <div class="form-group">
+      <label for="transaction_id">Account ID:</label>
+      <input type="number" id="accountId" formControlName="accountId" />
+    </div>
+    <div class="form-group">
+      <label for="transaction_id">Transaction Type:</label>
+      <input type="number" id="transactionType" formControlName="transactionType" />
+    </div>
+    <div class="form-group">
+      <label for="transaction_id">Transaction Amount:</label>
+      <input type="number" id="amount" formControlName="amount" />
+    </div>
+    <div class="form-group">
+      <label for="transactionDate">Transaction Date:</label>
+      <input type="number" id="transactionDate" formControlName="transactionDate" />
+    </div>
+    <!-- Similar form controls for other properties -->
+  
+    <button type="submit" [disabled]="!transactionForm.valid">Submit</button>
+  </form>
+  
