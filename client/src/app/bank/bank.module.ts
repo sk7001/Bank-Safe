@@ -10,6 +10,8 @@ import { NavBarComponent } from "../navbar/navbar.component";
 import { AuthModule } from "../auth/auth.module";
 import { AccountComponent } from "./components/account/account.component";
 import { TransactionComponent } from "./components/transaction/transaction.component";
+import { EditAccountComponent } from "./components/accountedit/accountedit.component";
+import { EditCustomerComponent } from "./components/customeredit/customeredit.component";
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { TransactionComponent } from "./components/transaction/transaction.compo
     CustomersComponent,
     AccountComponent,
     TransactionComponent,
-    NavBarComponent
+    NavBarComponent,
+    EditAccountComponent,
+    EditCustomerComponent
   ],
   imports: [
     CommonModule,

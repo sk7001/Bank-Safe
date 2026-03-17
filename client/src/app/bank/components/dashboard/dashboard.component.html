@@ -15,6 +15,7 @@
                         <th>Customer Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +24,10 @@
                         <td>{{ customer.name }}</td>
                         <td>{{ customer.email }}</td>
                         <td>{{ customer.role }}</td>
+                        <td class="actions">
+                            <button class="btn btn-edit" (click)="editCustomer(customer)">Edit</button>
+                            <button class="btn btn-delete" (click)="deteteCustomer(customer)">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -40,6 +45,7 @@
                         <th>Customer ID</th>
                         <th>Customer Name</th>
                         <th>Balance</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,6 +54,10 @@
                         <td>{{ account.customer.customerId }}</td>
                         <td>{{ account.customer.name }}</td>
                         <td>{{ account.balance }}</td>
+                        <td class="actions">
+                            <button class="btn btn-edit" (click)="editAccount(account)">Edit</button>
+                            <button class="btn btn-delete" (click)="deteteAccount(account)">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

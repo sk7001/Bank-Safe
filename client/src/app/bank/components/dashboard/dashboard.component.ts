@@ -78,4 +78,51 @@ export class DashboardComponent implements OnInit {
             error: (error) => console.log('Error loading transactions by user', error)
         });
     }
+
+
+    deteteCustomer(customer: Customer): void {
+        let conf = confirm("Do You Really Want To Delete  Customer?");
+        if (conf) {
+            this.bankService.deleteCustomer(Number(customer.customerId)).subscribe({
+                next: (response) => {
+                    alert('Customer deleted successfully.');
+                    this.loadAdminData();
+                },
+                error: (error) => {
+                    console.log('Error deleting customer: ' + error)
+                    console.error('Error deleting customer: ' + error);
+                }
+            });
+        }
+    }
+
+    editCustomer(customer: Customer): void {
+        this.router.navigate(['/bank/customer/edit', { customerId: customer.customerId, name: customer.name, email: customer.email, username: customer.username, password: customer.password, role: customer.role }]);
+
+    }
+
+    deteteAccount(account: Account): void {
+        let conf = confirm("Do You Really Want To Delete Account?");
+        if (conf) {
+            this.bankService.deleteAccount(Number(account.accountId)).subscribe({
+                next: (response) => {
+                    alert('Customer deleted successfully.');
+                    this.loadAdminData();
+                },
+                error: (error) => {
+                    console.log('Error deleting customer: ' + error)
+                    console.error('Error deleting customer: ' + error);
+                }
+            });
+        }
+    }
+
+
+    editAccount(account: any): void {
+        console.log(account);
+        this.router.navigate(['/bank/account/edit', {
+            accountId: account.accountId, balance: account.balance, customerId: account.customer.customerId,
+            name: account.customer.name, username: account.customer.username, password: account.customer.pasword, email: account.customer.email, role: account.customer.role
+        }]);
+    }
 }
