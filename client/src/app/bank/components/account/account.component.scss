@@ -1,221 +1,266 @@
-/* General form container */
-.form {
-  max-width: 450px;
-  margin: 20px auto;
-  padding: 25px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* =========================================
+   Create Account — Premium Dark UI (Final)
+   - Matches Login/User
+   - Better dark <select> styling (closed & opened)
+   ========================================= */
+
+/* 1) Fullpage background to match login (3 layers) */
+:host {
+  display: block;                 /* safe for scrollable page */
+  min-height: 100svh;             /* full viewport height (mobile-safe) */
+  padding: 24px 0;                /* vertical breathing space */
+  color: #e8eef6;
   font-family: Arial, sans-serif;
+
+  /* same gradient as login/user */
+  --bg1: #0e1a2b;
+  --bg2: #0b1626;
+  --bg3: #0a1320;
+  background: radial-gradient(1200px 600px at 20% -10%, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+
+  position: relative;
+  overflow: hidden;               /* keeps glow within viewport */
 }
 
-/* Form group styling /* General form container */
-.form {
-  max-width: 450px;
-  margin: 20px auto;
-  padding: 25px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+/* Glow orbs (3-layer feel, same as login/user) */
+:host::before,
+:host::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+:host::before {
+  width: 380px; height: 380px;
+  right: -120px; top: -120px;
+  background: radial-gradient(closest-side, #3b85ff, transparent 70%);
+}
+:host::after {
+  width: 420px; height: 420px;
+  left: -140px; bottom: -140px;
+  background: radial-gradient(closest-side, #00d2ff, transparent 70%);
 }
 
-/* Form group styling */
+/* 2) General form container — same footprint, premium surface */
+.form {
+  max-width: 450px;               /* unchanged */
+  margin: 20px auto;              /* unchanged */
+  padding: 25px;                  /* unchanged */
+
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;            /* refined corners (doesn't change layout) */
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle diagonal sheen, same as other cards/forms */
+.form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96,170,255,0.12), transparent 38%, transparent 62%, rgba(96,170,255,0.10));
+  pointer-events: none;
+}
+
+/* 3) Section title */
+h2 {
+  text-align: center;             /* unchanged */
+  margin-bottom: 20px;            /* unchanged */
+  color: #dfe8ff;
+  letter-spacing: 0.2px;
+}
+
+/* 4) Form grouping (unchanged spacing) */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 20px;            /* unchanged */
 }
 
+/* 5) Labels — readable on dark */
 label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #333;
+  display: block;                  /* unchanged */
+  margin-bottom: 6px;              /* unchanged */
+  font-weight: bold;               /* unchanged */
+  color: #dfe8ff;
 }
 
-/* Input fields and select */
+/* 6) Inputs & Select — modern dark fields (sizes unchanged) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
+  padding: 10px;                   /* unchanged */
+  font-size: 16px;                 /* unchanged */
+  border-radius: 8px;              /* refined corner */
+  border: 1px solid #2a4b77;       /* cool border */
+  background: linear-gradient(180deg, #0f2035, #0c1a2b);
+  color: #eaf2ff;
+  box-sizing: border-box;          /* unchanged */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #9fb5d6;
+  opacity: 0.9;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 select:focus {
-  border-color: #007bff;
+  border-color: #60aaff;
   outline: none;
+  box-shadow:
+    0 0 0 3px rgba(96,170,255,0.18),
+    0 1px 0 rgba(255,255,255,0.06) inset;
 }
 
-/* Submit button styling */
+/* 6a) SELECT — closed look: dark + custom arrow */
+.form select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* space for custom arrow */
+  padding-right: 40px;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg fill='%239fc6ff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+
+  /* help browsers prefer dark popups when supported */
+  color-scheme: dark;
+}
+
+/* Remove default arrow in old IE/Edge */
+.form select::-ms-expand {
+  display: none;
+}
+
+/* 6b) SELECT — opened menu & options (best-effort across browsers) */
+.form select option {
+  background-color: #0f2035; /* dark panel */
+  color: #eaf2ff;
+}
+
+/* Placeholder/empty option dimmer */
+.form select option[value=""] {
+  color: #9fb5d6;
+}
+
+/* Keep placeholder dim when no value chosen and select is required */
+.form select:required:invalid {
+  color: #9fb5d6;
+}
+
+/* WebKit scrollbars inside dropdown (when applicable) */
+@supports selector(option) {
+  .form select::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .form select::-webkit-scrollbar-track {
+    background: #0c1a2b;
+  }
+  .form select::-webkit-scrollbar-thumb {
+    background-color: #2a4b77;
+    border-radius: 8px;
+    border: 2px solid #0c1a2b;
+  }
+}
+
+/* 7) Primary action button — matches login/user (sizes unchanged) */
 button.btn-submit {
-  width: 100%;
-  padding: 12px 0;
-  font-size: 16px;
+  width: 100%;                     /* unchanged */
+  padding: 12px 0;                 /* unchanged */
+  font-size: 16px;                 /* unchanged */
+  border: none;                    /* unchanged */
+  border-radius: 10px;             /* refined corner */
   color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #2b6edb 0%, #1e4d8f 100%);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.25s ease, transform 0.14s ease, box-shadow 0.18s ease, filter 0.2s ease;
+  box-shadow:
+    0 10px 26px rgba(43,110,219,0.35),
+    0 1px 0 rgba(255,255,255,0.10) inset;
 }
 
 button.btn-submit:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #3b85ff 0%, #2461c2 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(43,110,219,0.45),
+    0 1px 0 rgba(255,255,255,0.12) inset;
+}
+
+button.btn-submit:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
 }
 
 button:disabled {
-  background-color: #ccc;
+  background: #455d7a;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
-
+/* 8) Status messages — styled for dark surfaces */
 .error,
 .success {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
+  margin-top: 15px;               /* unchanged */
+  padding: 10px;                  /* unchanged */
+  border-radius: 4px;             /* unchanged */
+  font-weight: bold;              /* unchanged */
+  text-align: center;             /* unchanged */
 }
 
 .error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: rgba(230, 57, 70, 0.12);
+  color: #ff8a8a;
+  border: 1px solid #e63946;
 }
 
 .success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: rgba(76, 175, 80, 0.12);
+  color: #75d18e;
+  border: 1px solid #34a853;
 }
 
-
+/* 9) Link back to Dashboard — consistent with login/user */
 a.task-list {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #007bff;
-  font-size: 16px;
-  font-weight: bold;
+  display: block;                  /* unchanged */
+  margin-top: 20px;                /* unchanged */
+  text-align: center;              /* unchanged */
+  text-decoration: none;           /* unchanged */
+  color: #9fc6ff;
+  font-size: 16px;                 /* unchanged */
+  font-weight: bold;               /* unchanged */
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a.task-list:hover {
-  color: #0056b3;
+  color: #c7ddff;
   text-decoration: underline;
+  text-shadow: 0 0 6px rgba(132,192,255,0.28);
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
- } 
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Input fields and select */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Submit button styling */
-button.btn-submit {
-  width: 100%;
-  padding: 12px 0;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button.btn-submit:hover {
-  background-color: #0056b3;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-
-.error,
-.success {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-
-a.task-list {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #007bff;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-a.task-list:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* 10) Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .form::before,
+  button.btn-submit {
+    animation: none !important;
+    transition: none !important;
+  }
 }

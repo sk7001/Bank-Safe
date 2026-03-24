@@ -1,73 +1,248 @@
-/* General form container */
+/* =========================================
+   Account Edit — Premium Dark UI (Final)
+   Matches Login/User/Create Account styling
+   ========================================= */
+
+/* 1) Fullpage background to match login (3 layers) */
+:host {
+  display: block;
+  min-height: 100svh;
+  padding: 24px 0;
+  color: #e8eef6;
+  font-family: Arial, sans-serif;
+
+  --bg1: #0e1a2b;
+  --bg2: #0b1626;
+  --bg3: #0a1320;
+
+  background: radial-gradient(1200px 600px at 20% -10%,
+    var(--bg1) 0%,
+    var(--bg2) 45%,
+    var(--bg3) 100%
+  );
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow orbs — same as login/user */
+:host::before,
+:host::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+:host::before {
+  width: 380px;
+  height: 380px;
+  right: -120px;
+  top: -120px;
+  background: radial-gradient(closest-side, #3b85ff, transparent 70%);
+}
+
+:host::after {
+  width: 420px;
+  height: 420px;
+  left: -140px;
+  bottom: -140px;
+  background: radial-gradient(closest-side, #00d2ff, transparent 70%);
+}
+
+/* 2) Form container */
 .form {
   max-width: 450px;
   margin: 20px auto;
   padding: 25px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+
+  background: linear-gradient(180deg,
+    rgba(18, 39, 66, 0.92),
+    rgba(18, 39, 66, 0.88)
+  );
+
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+
+  position: relative;
+  overflow: hidden;
 }
 
-/* Form group styling */
+/* sheen highlight */
+.form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(96,170,255,0.12),
+    transparent 38%,
+    transparent 62%,
+    rgba(96,170,255,0.10)
+  );
+  pointer-events: none;
+}
+
+/* heading */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #dfe8ff;
+  letter-spacing: 0.2px;
+}
+
+/* 4) Form groups */
 .form-group {
   margin-bottom: 20px;
 }
 
+/* labels */
 label {
   display: block;
   margin-bottom: 6px;
   font-weight: bold;
-  color: #333;
+  color: #dfe8ff;
 }
 
-/* Input fields and select */
+/* 5) Modern input/select */
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="number"],
 select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   font-size: 16px;
+
+  border-radius: 8px;
+  border: 1px solid #2a4b77;
+
+  background: linear-gradient(180deg, #0f2035, #0c1a2b);
+  color: #eaf2ff;
+
   box-sizing: border-box;
-  transition: border-color 0.3s ease;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 0 0 rgba(0,0,0,0);
+
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
+input::placeholder {
+  color: #9fb5d6;
+  opacity: 0.9;
+}
+
+/* focus */
+input:focus,
 select:focus {
-  border-color: #007bff;
+  border-color: #60aaff;
   outline: none;
+  box-shadow:
+    0 0 0 3px rgba(96,170,255,0.18),
+    0 1px 0 rgba(255,255,255,0.06) inset;
 }
 
-/* Submit button styling */
+/* 6) SELECT (closed state with custom arrow) */
+.form select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  padding-right: 40px;
+
+  background-image:
+    url("data:image/svg+xml;utf8,<svg fill='%239fc6ff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+
+  color-scheme: dark;
+}
+
+/* IE fallback */
+.form select::-ms-expand {
+  display: none;
+}
+
+/* 7) SELECT dropdown (options) */
+.form select option {
+  background-color: #0f2035;
+  color: #eaf2ff;
+}
+
+.form select option[value=""] {
+  color: #9fb5d6;
+}
+
+.form select:required:invalid {
+  color: #9fb5d6;
+}
+
+/* scrollbar styling (Chrome/Safari) */
+@supports selector(option) {
+  .form select::-webkit-scrollbar {
+    width: 10px;
+  }
+  .form select::-webkit-scrollbar-track {
+    background: #0c1a2b;
+  }
+  .form select::-webkit-scrollbar-thumb {
+    background-color: #2a4b77;
+    border-radius: 8px;
+    border: 2px solid #0c1a2b;
+  }
+}
+
+/* 8) Submit button */
 button.btn-submit {
   width: 100%;
   padding: 12px 0;
   font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
+
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+
+  color: #fff;
+  background: linear-gradient(135deg, #2b6edb 0%, #1e4d8f 100%);
+
   cursor: pointer;
-  transition: background-color 0.3s ease;
+
+  box-shadow:
+    0 10px 26px rgba(43,110,219,0.35),
+    0 1px 0 rgba(255,255,255,0.10) inset;
+
+  transition: background 0.25s ease, transform 0.14s ease, box-shadow 0.18s ease;
 }
 
+/* hover */
 button.btn-submit:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #3b85ff 0%, #2461c2 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(43,110,219,0.45),
+    0 1px 0 rgba(255,255,255,0.12) inset;
+}
+
+/* active */
+button.btn-submit:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
 }
 
 button:disabled {
-  background-color: #ccc;
+  background: #455d7a;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
-
+/* 9) Errors and success messages */
 .error,
 .success {
   margin-top: 15px;
@@ -78,34 +253,43 @@ button:disabled {
 }
 
 .error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: rgba(230,57,70,0.12);
+  color: #ff8a8a;
+  border: 1px solid #e63946;
 }
 
 .success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: rgba(76,175,80,0.12);
+  color: #75d18e;
+  border: 1px solid #34a853;
 }
 
-
+/* 10) Back to Dashboard link */
 a.task-list {
   display: block;
   margin-top: 20px;
   text-align: center;
   text-decoration: none;
-  color: #007bff;
+
+  color: #9fc6ff;
   font-size: 16px;
   font-weight: bold;
+  text-underline-offset: 3px;
+
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a.task-list:hover {
-  color: #0056b3;
+  color: #c7ddff;
   text-decoration: underline;
+  text-shadow: 0 0 6px rgba(132,192,255,0.28);
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* 11) Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .form::before,
+  button.btn-submit {
+    animation: none !important;
+    transition: none !important;
+  }
 }

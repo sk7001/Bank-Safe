@@ -1,24 +1,36 @@
+/* Position stays the same */
 .logout-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .logout-button {
-    padding: 4px 15px;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .logout-button:hover {
-    background-color: #c82333;
-  }
-  
-  .logout-button:focus {
-    outline: none;
-  }
-  
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* Logout button – modern dark UI */
+.logout-button {
+  padding: 4px 15px;             /* unchanged */
+  font-size: 16px;               /* unchanged */
+
+  background-color: #1e4d8f;     /* dark blue (matches login button) */
+  color: #fff;
+  border: 1px solid #2a3b52;     /* subtle border */
+  border-radius: 4px;            /* unchanged */
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35); /* matches login form shadow */
+  transition: background-color 0.25s ease,
+              transform 0.18s ease,
+              box-shadow 0.18s ease;
+}
+
+/* Hover */
+.logout-button:hover {
+  background-color: #2b6edb;     /* brighter blue – same as login hover */
+  transform: translateY(-1px);   /* subtle lift */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.40);
+}
+
+/* Focus */
+.logout-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96,170,255,0.35); /* same blue focus ring */
+}

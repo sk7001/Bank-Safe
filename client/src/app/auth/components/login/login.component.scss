@@ -1,65 +1,206 @@
-/* CSS for Login Component */
+/* ================================
+   Login Page — Premium Dark UI
+   (No HTML changes required)
+   ================================ */
+
+/* 1) Fullscreen layout + gradient background (scoped to login component) */
+:host {
+  /* Center nicely, even on tall screens */
+  display: grid;
+  min-height: 100svh;                    /* handles mobile browser UI */
+  place-items: center;
+  padding: 24px;
+
+  /* Elegant corporate gradient */
+  --bg1: #0e1a2b;
+  --bg2: #0b1626;
+  --bg3: #0a1320;
+  background: radial-gradient(1200px 600px at 20% -10%, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+  color: #e8eef6;
+  font-family: Arial, sans-serif;
+
+  /* Decorative soft orbs (no HTML change) */
+  position: relative;
+  overflow: hidden;
+}
+
+/* background accents */
+:host::before,
+:host::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+:host::before {
+  width: 380px; height: 380px;
+  right: -120px; top: -120px;
+  background: radial-gradient(closest-side, #3b85ff, transparent 70%);
+}
+:host::after {
+  width: 420px; height: 420px;
+  left: -140px; bottom: -140px;
+  background: radial-gradient(closest-side, #00d2ff, transparent 70%);
+}
+
+/* 2) Form container — same size, just refined look */
 .login-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
+  max-width: 400px;      /* unchanged */
+  margin: 0 auto;        /* unchanged */
+  padding: 20px;         /* unchanged */
+
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;   /* tasteful rounding without changing layout */
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+
+  /* Gorgeous light sweep highlight */
+  position: relative;
+  overflow: hidden;
+}
+.login-form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96,170,255,0.12), transparent 38%, transparent 62%, rgba(96,170,255,0.10));
+  pointer-events: none;
 }
 
+/* Optional subtle sheen animation (respects reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .login-form::before {
+    animation: sheen 7s linear infinite;
+  }
+  @keyframes sheen {
+    0%   { opacity: 0.10; transform: translateX(-2%); }
+    50%  { opacity: 0.18; transform: translateX(2%); }
+    100% { opacity: 0.10; transform: translateX(-2%); }
+  }
+}
+
+/* 3) Labels */
 .login-form label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
+  display: block;            /* unchanged */
+  margin-bottom: 10px;       /* unchanged */
+  font-weight: bold;         /* unchanged */
+  color: #dfe8ff;            /* better readability on dark */
+  letter-spacing: 0.2px;
 }
 
+/* 4) Inputs & Select — same sizes, premium look */
 .login-form input[type="text"],
 .login-form input[type="password"],
 .login-form select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 10px;             /* unchanged */
+  font-size: 16px;           /* unchanged */
+  border-radius: 8px;        /* slightly softer corners */
+  border: 1px solid #2a4b77; /* refined border */
+  background: linear-gradient(180deg, #0f2035, #0c1a2b);
+  color: #eaf2ff;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 0 0 rgba(0,0,0,0);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.08s ease;
 }
 
+.login-form input[type="text"]::placeholder,
+.login-form input[type="password"]::placeholder {
+  color: #9fb5d6;
+  opacity: 0.85;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus,
+.login-form select:focus {
+  border-color: #60aaff;
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(96,170,255,0.18),
+    0 1px 0 rgba(255,255,255,0.06) inset;
+  transform: translateZ(0); /* micro-stability for some GPUs */
+}
+
+/* 5) Error text (under fields) */
 .login-form .error {
-  color: red;
-  margin-top: 5px;
+  color: #ff8a8a;     /* softer red on dark */
+  margin-top: 5px;    /* unchanged */
 }
 
+/* 6) Submit Button — same size, more delight */
 .login-form button[type="submit"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4caf50;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
+  display: block;     /* unchanged */
+  width: 100%;        /* unchanged */
+  padding: 10px;      /* unchanged */
+  margin-top: 20px;   /* unchanged */
+
+  border: none;       /* unchanged */
+  border-radius: 10px;/* slightly softer without changing footprint */
+  background:
+    linear-gradient(135deg, #2b6edb 0%, #1e4d8f 100%);
+  color: #ffffff;     /* unchanged */
+  font-size: 16px;    /* unchanged */
+  cursor: pointer;    /* unchanged */
+
+  box-shadow:
+    0 10px 26px rgba(43,110,219,0.35),
+    0 1px 0 rgba(255,255,255,0.10) inset;
+  transition: background 0.25s ease, transform 0.14s ease, box-shadow 0.18s ease, filter 0.2s ease;
 }
 
 .login-form button[type="submit"]:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #3b85ff 0%, #2461c2 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(43,110,219,0.45),
+    0 1px 0 rgba(255,255,255,0.12) inset;
 }
 
+.login-form button[type="submit"]:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+  box-shadow:
+    0 10px 26px rgba(43,110,219,0.35),
+    0 1px 0 rgba(255,255,255,0.08) inset;
+}
+
+/* 7) Form-level error (if used) */
 .login-form .error-message {
-  color: red;
-  margin-top: 10px;
-}
-
-a.task-list {
-  display: block;
-  margin-top: 20px;
+  color: #ff9b9b;
+  margin-top: 10px;   /* unchanged */
   text-align: center;
-  text-decoration: none;
-  color: #007bff;
 }
 
+/* 8) Secondary link (Sign up) */
+a.task-list {
+  display: block;         /* unchanged */
+  margin-top: 20px;       /* unchanged */
+  text-align: center;     /* unchanged */
+  text-decoration: none;  /* unchanged */
+
+  color: #9fc6ff;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
 a.task-list:hover {
+  color: #c7ddff;
   text-decoration: underline;
+  text-shadow: 0 0 6px rgba(132,192,255,0.28);
 }
 
+/* 9) Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .login-form::before,
+  .login-form button[type="submit"],
+  :host::before,
+  :host::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

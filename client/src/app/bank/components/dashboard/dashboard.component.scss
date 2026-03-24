@@ -1,59 +1,140 @@
+/* ================================
+   Dashboard — Premium Dark UI
+   (No top gap; matches Login/User)
+   ================================ */
+
+/* 1) Full-page premium background (3 layers like login) */
+:host {
+  display: block;
+  min-height: 100svh;
+  /* IMPORTANT: remove top padding to avoid gap under navbar */
+  padding: 0 0 24px;  /* no top gap, keep bottom breathing space */
+
+  color: #e8eef6;
+  font-family: Arial, sans-serif;
+
+  --bg1: #0e1a2b;
+  --bg2: #0b1626;
+  --bg3: #0a1320;
+  background: radial-gradient(1200px 600px at 20% -10%, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow orbs */
+:host::before,
+:host::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+:host::before {
+  width: 380px; height: 380px;
+  right: -120px; top: -120px;
+  background: radial-gradient(closest-side, #3b85ff, transparent 70%);
+}
+:host::after {
+  width: 420px; height: 420px;
+  left: -140px; bottom: -140px;
+  background: radial-gradient(closest-side, #00d2ff, transparent 70%);
+}
+
+/* Container */
 .dashboard-container {
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background: transparent;
 }
 
+/* Page title */
+.page-title,
+h2 {
+  margin: 0 0 16px 0;   /* no top margin to avoid any visual gap */
+  font-weight: 700;
+  color: #dfe8ff;
+  letter-spacing: 0.3px;
+}
+
+/* Cards */
 .card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border: 1px solid rgba(255,255,255,0.10);
   padding: 20px;
   margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+  position: relative;
+  overflow: hidden;
 }
 
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96,170,255,0.12), transparent 38%, transparent 62%, rgba(96,170,255,0.10));
+  pointer-events: none;
+}
 
+/* Headings inside cards */
+h3 {
+  margin-top: 0;             /* ensures tight top alignment in card */
+  margin-bottom: 12px;
+  font-size: 22px;
+  color: #cfe1ff;
+}
+
+/* Empty state */
+.empty-list {
+  padding: 10px;
+  text-align: center;
+  color: #c8d6e5;
+}
+
+/* Tables */
 .table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
+  border: 1px solid #2a4b77;
   padding: 8px;
   text-align: left;
+  color: #e8eef6;
 }
 
+/* Header contrast */
 .table th {
-  background-color: #007bff;
-  color: white;
+  background: linear-gradient(180deg, #2660b6, #1e4d8f);
+  color: #fff;
 }
 
-.table td {
-  background-color: #f9f9f9;
-}
+/* Body zebra + hover */
+.table tbody tr:nth-child(even) td { background: #112844; }
+.table tbody tr:nth-child(odd)  td { background: #0f2542; }
+.table tbody tr:hover td         { background: #143055; }
 
-h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 24px;
-  color: #333;
-}
-
-.empty-list {
-  padding: 10px;
-  text-align: center;
-}
-
+/* Actions */
 td.actions {
   display: flex;
   justify-content: space-evenly;
   gap: 10px;
 }
 
+/* Buttons */
 .btn {
   flex-grow: 1;
   padding: 8px 16px;
@@ -61,27 +142,58 @@ td.actions {
   font-size: 16px;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.25s ease, transform 0.14s ease, box-shadow 0.18s ease, filter 0.2s ease;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.10) inset;
+}
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
 }
 
-/* Edit button */
+/* Edit (green gradient) */
 .btn-edit {
-  background-color: #4caf50;
-  color: white;
+  background: linear-gradient(135deg, #34a853 0%, #1f8a43 100%);
 }
-
 .btn-edit:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #4fd46b 0%, #2caa56 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(47,148,74,0.40),
+    0 1px 0 rgba(255,255,255,0.12) inset;
 }
 
-/* Delete button */
+/* Delete (red gradient) */
 .btn-delete {
-  background-color: #e74c3c;
-  color: white;
+  background: linear-gradient(135deg, #e63946 0%, #c1272f 100%);
+}
+.btn-delete:hover {
+  background: linear-gradient(135deg, #ff5b68 0%, #d73740 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(192,57,43,0.40),
+    0 1px 0 rgba(255,255,255,0.12) inset;
 }
 
-.btn-delete:hover {
-  background-color: #c0392b;
+/* Mobile: stack action buttons */
+@media (max-width: 640px) {
+  td.actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .btn { width: 100%; }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .card::before,
+  .btn {
+    animation: none !important;
+    transition: none !important;
+  }
 }

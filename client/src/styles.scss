@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global base — prevents white page flash and white border */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b1626 !important; /* dark corporate background */
+  color: #e8eef6;
+  font-family: Arial, sans-serif;
+}

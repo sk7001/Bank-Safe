@@ -1,242 +1,229 @@
-/* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ================================
+   User Page — Premium Dark UI
+   (Matches Login; no HTML changes)
+   ================================ */
 
-/* Global styles */
-body {
-  margin: 0;
-  padding: 0;
+/* 1) Fullpage background to match login */
+:host {
+  display: block;                 /* safe for scrollable pages */
+  min-height: 100svh;             /* viewport height incl. mobile UI */
+  padding: 24px 0;                /* vertical breathing space */
+  background: radial-gradient(1200px 600px at 20% -10%, #0e1a2b 0%, #0b1626 45%, #0a1320 100%);
+  color: #e8eef6;
   font-family: Arial, sans-serif;
 }
 
-/* Container for layout */
+/* 2) Grid / layout (unchanged) */
 .container {
   width: 100%;
-  max-width: 1200px;
-  /* Limit container width */
+  max-width: 1200px;  /* unchanged */
   margin: 0 auto;
-  padding: 20px;
-  /* Add padding for better spacing */
+  padding: 20px;      /* unchanged */
 }
 
-/* Clearfix for row */
 .row::after {
   content: "";
   clear: both;
   display: table;
 }
 
-/* Column layout system */
 [class*="col-"] {
   float: left;
-  padding: 10px;
-  /* Add padding to columns for spacing */
+  padding: 10px;      /* unchanged */
 }
 
-.col-1 {
-  width: 8.33%;
-}
+.col-1  { width: 8.33%;  }
+.col-2  { width: 16.67%; }
+.col-3  { width: 25%;    }
+.col-4  { width: 33.33%; }
+.col-5  { width: 41.67%; }
+.col-6  { width: 50%;    }
+.col-7  { width: 58.33%; }
+.col-8  { width: 66.67%; }
+.col-9  { width: 75%;    }
+.col-10 { width: 83.33%; }
+.col-11 { width: 91.67%; }
+.col-12 { width: 100%;   }
 
-.col-2 {
-  width: 16.67%;
-}
-
-.col-3 {
-  width: 25%;
-}
-
-.col-4 {
-  width: 33.33%;
-}
-
-.col-5 {
-  width: 41.67%;
-}
-
-.col-6 {
-  width: 50%;
-}
-
-.col-7 {
-  width: 58.33%;
-}
-
-.col-8 {
-  width: 66.67%;
-}
-
-.col-9 {
-  width: 75%;
-}
-
-.col-10 {
-  width: 83.33%;
-}
-
-.col-11 {
-  width: 91.67%;
-}
-
-.col-12 {
-  width: 100%;
-}
-
-/* Card component */
+/* 3) Card matches login surface */
 .card {
-  margin: 10px 0;
-  /* Add margin for separation */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Add a subtle shadow for better visibility */
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  margin: 10px 0;                       /* unchanged */
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;                  /* subtle refinement */
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+  position: relative;
+  overflow: hidden;
 }
 
-.card-body {
-  padding: 15px;
-  /* Increase padding for better spacing */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96,170,255,0.12), transparent 38%, transparent 62%, rgba(96,170,255,0.10));
+  pointer-events: none;
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: bold;
-  /* Add emphasis */
-}
+.card-body { padding: 15px; }           /* unchanged */
+.card-title { font-size: 18px; font-weight: bold; color: #a7c4ff; }
+.card-text  { font-size: 14px; color: #c8d6e5; }
 
-.card-text {
-  font-size: 14px;
-  color: #555;
-  /* Add a softer color */
-}
-
-/* Form styling */
+/* 4) Form — EXACT same surface feel as login */
 .user-form {
-  max-width: 400px;
-  margin: 20px auto;
-  /* Center the form */
-  padding: 20px;
-  background-color: #f9f9f9;
-  /* Use a softer background color */
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  max-width: 400px;                     /* unchanged */
+  margin: 20px auto;                    /* unchanged */
+  padding: 20px;                        /* unchanged */
+
+  background:
+    linear-gradient(180deg, rgba(18, 39, 66, 0.92), rgba(18, 39, 66, 0.88));
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.05) inset;
+
+  position: relative;
+  overflow: hidden;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.user-form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96,170,255,0.12), transparent 38%, transparent 62%, rgba(96,170,255,0.10));
+  pointer-events: none;
 }
 
+.form-group { margin-bottom: 20px; }    /* unchanged */
+
+/* 5) Labels — match login */
 label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  /* Add spacing between label and input */
+  display: block;            /* unchanged */
+  font-weight: bold;         /* unchanged */
+  margin-bottom: 5px;        /* unchanged */
+  color: #dfe8ff;
+  letter-spacing: 0.2px;
 }
 
+/* 6) Inputs & Select — same as login (sizes unchanged) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  /* Increase font size for better readability */
-  transition: border-color 0.3s ease;
-  /* Add a smooth transition for input focus */
+  padding: 10px;             /* unchanged */
+  font-size: 14px;           /* unchanged */
+  border-radius: 8px;
+  border: 1px solid #2a4b77;
+  background: linear-gradient(180deg, #0f2035, #0c1a2b);
+  color: #eaf2ff;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 0 0 rgba(0,0,0,0);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.08s ease;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #9fb5d6;
+  opacity: 0.85;
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 input[type="password"]:focus,
 select:focus {
-  border-color: #007bff;
-  /* Change border color on focus */
+  border-color: #60aaff;
   outline: none;
-  /* Remove default outline */
+  box-shadow:
+    0 0 0 3px rgba(96,170,255,0.18),
+    0 1px 0 rgba(255,255,255,0.06) inset;
+  transform: translateZ(0);
 }
 
-/* Button styling */
+/* 7) Submit button — same tone as login (sizes unchanged) */
 button.btn-submit {
-  display: block;
-  width: 100%;
-  padding: 12px 0;
-  margin-top: 10px;
-  color: #fff;
-  background-color: #007bff;
+  display: block;            /* unchanged */
+  width: 100%;               /* unchanged */
+  padding: 12px 0;           /* unchanged */
+  margin-top: 10px;          /* unchanged */
+
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2b6edb 0%, #1e4d8f 100%);
+  color: #ffffff;
+  font-size: 16px;           /* unchanged */
   cursor: pointer;
-  font-size: 16px;
-  /* Increase font size for better readability */
-  transition: background-color 0.3s ease;
+
+  box-shadow:
+    0 10px 26px rgba(43,110,219,0.35),
+    0 1px 0 rgba(255,255,255,0.10) inset;
+  transition: background 0.25s ease, transform 0.14s ease, box-shadow 0.18s ease, filter 0.2s ease;
 }
 
 button.btn-submit:hover {
-  background-color: #0056b3;
-  /* Darken button on hover */
+  background: linear-gradient(135deg, #3b85ff 0%, #2461c2 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 34px rgba(43,110,219,0.45),
+    0 1px 0 rgba(255,255,255,0.12) inset;
 }
 
-button.btn-submit:focus {
-  outline: none;
-  background-color: #0056b3;
+button.btn-submit:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
 }
 
-/* Link styling */
+/* 8) Link — same visual system as login */
 a.task-list {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #007bff;
-  transition: color 0.3s ease;
+  display: block;         /* unchanged */
+  margin-top: 20px;       /* unchanged */
+  text-align: center;     /* unchanged */
+  text-decoration: none;  /* unchanged */
+  color: #9fc6ff;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
-
 a.task-list:hover {
+  color: #c7ddff;
   text-decoration: underline;
-  color: #0056b3;
-  /* Darken link color on hover */
+  text-shadow: 0 0 6px rgba(132,192,255,0.28);
 }
 
-/* Error and success messages */
+/* 9) Messages — synced with login tones */
 .error {
-  color: red;
+  color: #ff8a8a;
   margin-top: 10px;
   text-align: center;
-  /* Error color */
 }
-
 .success {
   margin-top: 10px;
-  color: #28a745;
+  color: #75d18e;
   text-align: center;
-  /* Success color */
 }
 
-/* Responsive improvements */
+/* 10) Responsive — unchanged layout behavior */
 @media (max-width: 768px) {
-
-  .col-1,
-  .col-2,
-  .col-3,
-  .col-4,
-  .col-5,
-  .col-6,
-  .col-7,
-  .col-8,
-  .col-9,
-  .col-10,
-  .col-11,
-  .col-12 {
-      width: 100%;
-      /* Make columns stack on smaller screens */
-      padding: 5px;
-      /* Reduce padding on smaller screens */
+  .col-1, .col-2, .col-3, .col-4, .col-5,
+  .col-6, .col-7, .col-8, .col-9,
+  .col-10, .col-11, .col-12 {
+    width: 100%;
+    padding: 5px;
   }
+  .container { padding: 10px; }
+}
 
-  .container {
-      padding: 10px;
-      /* Reduce container padding on smaller screens */
+/* 11) Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .user-form::before,
+  .card::before,
+  button.btn-submit {
+    animation: none !important;
+    transition: none !important;
   }
 }
